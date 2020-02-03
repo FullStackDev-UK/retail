@@ -19,15 +19,20 @@
             //     .then(response => (this.whatever = response))
         },
         created() {
-            console.log(this.$props['product'])
-            console.log(this.$props['product_images'])
+            // console.log(this.$props['product'])
+            // console.log(this.$props['product_images'])
         },
         methods: {
             productImages(){
                 var imageArray = []
-                this.$props['product_images'].forEach(element => {
-                    imageArray.push(element.image_address)
+                var pi = this.$props['product_images']
+                var pi_array = Object.values(pi).map(function(v) {
+                    imageArray.push(v.image_address)
+                    return v
                 })
+                console.log("imageArray: ", imageArray);
+                console.log("pi_array: ", pi_array);
+
                 return imageArray
             },
             addToOrder(){

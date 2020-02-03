@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Tests;
+namespace Tests;
 
 use Tests\TestCase;
+
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Routing\RouteCollection;
 use Illuminate\Support\Facades\Route;
@@ -34,11 +35,10 @@ class PagesTest extends TestCase
      */
     public function test_AboutPage_can_be_loaded()
     {
-        $path = $this->site_base_url;
+        $response = $this->get('/about');
 
-        $response = $this->get($path);
         $response->assertStatus(200);
-        $response->assertSee('A little background');
+        $response->assertSee('A bit about');
     }
 
     /**
@@ -48,7 +48,7 @@ class PagesTest extends TestCase
      */
     public function test_ContactPage_can_be_loaded()
     {
-        $response = $this->get($this->site_base_url.'/contact');
+        $response = $this->get('/contact');
 
         $response->assertStatus(200);
         $response->assertSee('Contact');
@@ -61,10 +61,10 @@ class PagesTest extends TestCase
      */
     public function test_LoginPage_can_be_loaded()
     {
-        $response = $this->get($this->site_base_url.'/login');
+        $response = $this->get('/login');
 
         $response->assertStatus(200);
-        $response->assertStringContainsString('Login',$response);
+        $response->assertSee('Login');
     }
 
     /**
@@ -74,9 +74,15 @@ class PagesTest extends TestCase
      */
     public function test_RegisterPage_can_be_loaded()
     {
-        $response = $this->get($this->site_base_url.'/register');
+        $response = $this->get('/register');
 
         $response->assertStatus(200);
-        $response->assertStringContainsString('Register',$response);
+        $response->assertSee('Register');
     }
+
+    public function testDebugging(){
+        $a = "aaaaaaa";
+        var_dump($a);
+    }
+
 }

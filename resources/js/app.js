@@ -14,10 +14,11 @@ Vue.use(VueRouter);
 
 require('./bootstrap');
 
-require('./components/ContactForm');
-
 import BootstrapVue from 'bootstrap-vue'
 Vue.use(BootstrapVue)
+
+require("@babel/register");
+require('./components/ContactForm');
 
 Vue.component('product-list', require('./components/ProductList').default);
 Vue.component('product-details', require('./components/ProductDetails').default);
@@ -91,3 +92,22 @@ new Vue({
         }
     }
 })
+
+let first = "John";
+            let last = "Doe";
+            var name = `Your name is ${first} ${last}.`
+
+            var roadPoem = `Then took the other, as just as fair,
+                            And having perhaps the better claim
+                            Because it was grassy and wanted wear,
+                            Though as for that the passing there
+                            Had worn them really about the same,`
+
+            console.log("name: "+name);
+            console.log("roadPoem: "+roadPoem);
+
+            var newOne = () => {
+                console.log("This is returned from the main.js file 2");
+            }
+            newOne()
+            
