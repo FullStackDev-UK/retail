@@ -1,62 +1,3 @@
-<script>
-    import {HTTP} from '../http-common';
-    import Axios from 'axios';
-    import ImageGallery from './ImageGallery';
-
-    export default {
-        props: ['product','product_images'],
-        data() {
-            return {
-                info: null,
-                index: null,
-                response: null,
-                errors: []
-            }
-        },
-        mounted() {
-            // axios
-            //     .get('')
-            //     .then(response => (this.whatever = response))
-        },
-        created() {
-            // console.log(this.$props['product'])
-            // console.log(this.$props['product_images'])
-        },
-        methods: {
-            productImages(){
-                var imageArray = []
-                var pi = this.$props['product_images']
-                var pi_array = Object.values(pi).map(function(v) {
-                    imageArray.push(v.image_address)
-                    return v
-                })
-                console.log("imageArray: ", imageArray);
-                console.log("pi_array: ", pi_array);
-
-                return imageArray
-            },
-            addToOrder(){
-                // Post product.id to OrderController@add-to-order
-                HTTP.post('/retail/add-to-order/'+this.product.id)
-                .then(response => {
-                    this.response = response
-                    console.log(response)
-                })
-                .catch(e => {
-                    this.errors.push(e)
-                })
-            }
-        },
-        computed: {
-            productcell(){
-                return this.$props['product']
-            }
-        },
-        components: {
-            'image-gallery': ImageGallery
-        }
-    }
-</script>
 <template>
     <div class="card justify-content-center">
 
@@ -76,8 +17,13 @@
                         <h5 class="vliheading">Please <a :href='"/retail/contact"' class="inline-link">let us know</a> if you require any assistance...</h5>
 
                         <div class="row">
-                            <div class="col-md-3">
-                                <image-gallery :images="productImages()" :index="index" @close="index = null"></image-gallery>
+                            <div class="col-md-3 border-green border-dashed">
+                                <div v-if="this.$props.product_images.length > 0">
+                                    <image-gallery :images="productImages()" :index="index" @close="index = null"></image-gallery>
+                                </div>
+                                <div v-else>
+                                    <h5>No images to display</h5>
+                                </div>
                             </div>
 
                             <div class="col-md-9">
@@ -109,6 +55,58 @@
 
     </div>
 </template>
+<script>
+    import {HTTP} from '../http-common';
+    import Axios from 'axios';
+    import {store} from '../store';
+    import ImageGallery from './ImageGallery';
 
+    export default {
+        components: {
+            store,
+            ImageGallery
+        },
+        props: ['product','product_images'],
+        data() {
+            return {
+                info: null,
+                index: null,
+                response: null,
+                errors: []
+            }
+        },
+        mounted() {
+        },
+        created() {
+            // console.log(this.$props['product'])
+            // console.log(this.$props['product_images'])
+        },
+        methods: {
+            productImages(){
+                var imageArray = []
+                this.$props['product_images'].forEach(element => {
+                    imageArray.push(element.image_address)
+                })
+                return imageArray
+            },
+            addToOrder(){
+                // Post product.id to OrderController@add-to-order
+                HTTP.post('/retail/add-to-order/'+this.product.id)
+                .then(response => {
+                    this.response = response
+                    console.log(response)
+                })
+                .catch(e => {
+                    this.errors.push(e)
+                })
+            }
+        },
+        computed: {
+            productcell(){
+                return this.$props['product']
+            }
+        }
+    }
+</script>
 <style lang="scss">
 </style>

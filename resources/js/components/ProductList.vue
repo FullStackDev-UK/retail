@@ -1,47 +1,3 @@
-<script>
-    import {HTTP} from '../http-common';
-    import ImageGallery from './ImageGallery.vue';
-
-    export default {
-        mounted() {
-        },
-        data() {
-            return {
-                heading: 'Featured Products',
-                description: 'Images and a description of featured products...',
-                products: '',
-                productsPerRow: 3,
-                images: [
-                    'public/images/Bottle_edit.jpg'
-                ],
-                index: null,
-                errors: []
-            }
-        },
-        created() {
-            HTTP.get('productlist')
-                .then(response => {
-                    this.products = response.data
-                })
-                .catch(e => {
-                    this.errors.push(e)
-                })
-        },
-        methods: {
-        },
-        computed: {
-            rowCount() {
-                return Math.ceil(this.products.length / this.productsPerRow)
-            },
-            mobile() {
-                return this.$store.state.windowWidth <= 480
-            }
-        },
-        components: {
-            'image-gallery': ImageGallery
-        }
-    }
-</script>
 <template>
     <div class="panel panel-default justify-content-center">
 
@@ -90,6 +46,51 @@
         </div>
     </div>
 </template>
+<script>
+    import {HTTP} from '../http-common';
+    import ImageGallery from './ImageGallery.vue';
+    import {store} from '../store';
 
+    export default {
+        components: {
+            store,
+            ImageGallery
+        },
+        data() {
+            return {
+                heading: 'Featured Products',
+                description: 'Images and a description of featured products...',
+                products: '',
+                productsPerRow: 3,
+                images: [
+                    'public/images/Bottle_edit.png'
+                ],
+                index: null,
+                errors: []
+            }
+        },
+        mounted() {
+        },
+        created() {
+            HTTP.get('productlist')
+                .then(response => {
+                    this.products = response.data
+                })
+                .catch(e => {
+                    this.errors.push(e)
+                })
+        },
+        methods: {
+        },
+        computed: {
+            rowCount() {
+                return Math.ceil(this.products.length / this.productsPerRow)
+            },
+            mobile() {
+                return this.$store.state.windowWidth <= 480
+            }
+        }
+    }
+</script>
 <style lang="scss">
 </style>

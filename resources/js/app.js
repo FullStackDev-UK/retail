@@ -5,19 +5,20 @@ Vue.config.productionTip = false
 import Vuex from 'vuex';
 Vue.use(Vuex);
 
-import axios from "axios";
+// import axios from "axios";
 global.axios = global.axios = require('axios');
 window.axios = require('axios');
 
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
-require('./bootstrap');
-
 import BootstrapVue from 'bootstrap-vue'
 Vue.use(BootstrapVue)
 
-require("@babel/register");
+import {store} from './store';
+
+require('./bootstrap');
+
 require('./components/ContactForm');
 
 Vue.component('product-list', require('./components/ProductList').default);
@@ -29,15 +30,6 @@ Vue.component('contact-form', require('./components/ContactForm').default);
 var obj = {
     foo: 'bar'
 }
-
-const store = new Vuex.Store({
-  state: {
-    windowWidth: window.innerWidth,
-  },  mutations: {
-    setWindowWidth(state) {
-      state.windowWidth = window.innerWidth;
-    }
-  },});
 
 const Foo = { template: '<div>foo</div>' }
 const Contact = { template: '<contact-form></contact-form>' }
@@ -66,19 +58,13 @@ new Vue({
         }
     },
     created() {
-        window.addEventListener('load', (event) => {
-            store.commit('setWindowWidth')
-            console.log("window.innerWidth: " + store.state.windowWidth)
-        }),
-        window.addEventListener('resize', (event) => {
-            store.commit('setWindowWidth')
-            console.log("window.innerWidth: " + store.state.windowWidth)
-        })
     },
     mounted () {
-        //axios
-            //.get('http://')
-            //.then(response => (this.info = response))
+      function writeWidth(e){
+        store.commit('setWindowWidth',window.innerWidth);
+        console.log("Debounced event: window.innerWidth: " + window.innerWidth);
+      }
+      $(window).on('resize', _.debounce(writeWidth, 1000));
     },
     mutations: {
         setWindowWidth(w) {
@@ -92,22 +78,3 @@ new Vue({
         }
     }
 })
-
-let first = "John";
-            let last = "Doe";
-            var name = `Your name is ${first} ${last}.`
-
-            var roadPoem = `Then took the other, as just as fair,
-                            And having perhaps the better claim
-                            Because it was grassy and wanted wear,
-                            Though as for that the passing there
-                            Had worn them really about the same,`
-
-            console.log("name: "+name);
-            console.log("roadPoem: "+roadPoem);
-
-            var newOne = () => {
-                console.log("This is returned from the main.js file 2");
-            }
-            newOne()
-            
