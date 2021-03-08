@@ -1,8 +1,6 @@
 <template>
   <div>
 
-    <!-- <div class="image rounded" v-for="(image, imageIndex) in images" :key="imageIndex" @click="index = imageIndex" :style="{ backgroundImage: 'url(' + image + ')', height:'120px', backgroundSize: 'contain', position: 'relative', backgroundRepeat: 'no-repeat' }"></div> -->
-
     <ul class="image rounded centered">
       <li v-for="(image, imageIndex) in images" :key="imageIndex" @click="index = imageIndex"><img :src="image" /></li>
     </ul>
